@@ -13,8 +13,8 @@ type notificationProps = {
 
 const Navbar = async () => {
     const session = await getServerSession(options);
-    if (!session?.user) { return }
-    const res: notificationProps = await getNotifications(session.user.id);
+
+    const res: notificationProps = await getNotifications(session?.user.id!);
 
 
     return (
