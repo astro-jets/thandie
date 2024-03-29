@@ -10,6 +10,7 @@ import { IoSpeedometerOutline } from "react-icons/io5";
 import NotificationModal from "@/app/components/NotificationModal"
 import { readNotifications } from "@/app/actions/action";
 import { useRouter } from "next/navigation";
+import SearchForm from "./SearchForm";
 
 type notificationProps = {
     _id: string,
@@ -108,6 +109,7 @@ const NavbarComponent = ({ notifications }: { notifications: notificationProps }
 
                                         ))
                                     }
+                                    <SearchForm />
                                 </div>
                             </div>
                         </div>
