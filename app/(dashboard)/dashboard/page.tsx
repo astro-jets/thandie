@@ -26,7 +26,7 @@ async function Dashboard() {
     const statsData = [
         { link: '/claims', label: 'Claims', value: stats.claims, icon: <BsArchive color={'orange'} size={50} />, positive: false },
         { link: '/subscriptions', label: 'Subscriptions', value: stats.subscriptions, icon: <BsFolder2Open color={'orange'} size={50} />, positive: false },
-        { link: '', label: 'Payments', value: `K${stats.payments}`, icon: <BsCreditCard color={'orange'} size={50} />, positive: false },
+        { link: '', label: 'Payments', value: `K${stats.payments.toLocaleString()}`, icon: <BsCreditCard color={'orange'} size={50} />, positive: false },
     ]
     console.log("Payments => ", payments)
 

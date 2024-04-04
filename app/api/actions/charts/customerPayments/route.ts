@@ -22,9 +22,11 @@ export async function GET(req: Request) {
     "Nov",
     "Dec",
   ];
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get("user");
 
-  // Find all subscriptions
-  const userSubscriptions = await Subscription.find();
+  // Find all subscriptions by the user Id
+  const userSubscriptions = await Subscription.find({ user: userId });
 
   // Initialize result array
   const result = months.map((month) => ({ date: month, Payments: 0 }));

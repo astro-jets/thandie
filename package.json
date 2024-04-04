@@ -1,5 +1,5 @@
 {
-  "name": "news2",
+  "name": "insurance",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,16 +12,13 @@
     "@headlessui/react": "^1.7.18",
     "@headlessui/tailwindcss": "^0.2.0",
     "@tremor/react": "^3.14.1",
-    "@uploadthing/react": "^6.0.2",
     "bcrypt": "^5.1.1",
-    "mongodb": "^6.3.0",
     "mongoose": "^8.0.3",
     "next": "14.0.4",
     "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^4.12.0",
-    "uploadthing": "^6.1.0"
+    "react-icons": "^4.12.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

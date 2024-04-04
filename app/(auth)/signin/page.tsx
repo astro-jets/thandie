@@ -23,7 +23,7 @@ const Signup = () => {
             const res = await signIn("credentials", { email, password, redirect: false })
             if (res?.ok) {
                 console.log(res)
-                router.push("/messages")
+                router.push("/admin")
             } else {
                 setModalMsg("Incorrect email or password.")
                 setModalStatus(true)

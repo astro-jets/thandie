@@ -44,7 +44,7 @@ const Subscriptions = async () => {
                                             ))
                                         }
 
-                                        <button className="bg-primary-700 text-white rounded-lg mt-5 p-3 w-full">unsubscribe</button>
+                                        {/* <button className="bg-primary-700 text-white rounded-lg mt-5 p-3 w-full">unsubscribe</button> */}
 
                                     </div>
                                 </div>

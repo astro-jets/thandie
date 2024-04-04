@@ -28,6 +28,10 @@ const ServicesAdminList = ({ services }: { services: serviceProps }) => {
         if (res) {
             setSuccess(true)
         }
+        setFormData({
+            list: [],
+            name: '', price: ''
+        })
         setShowForm(!showFrom);
     }
     const addService = async () => {

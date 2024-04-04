@@ -13,12 +13,12 @@ const SearchForm: React.FC = () => {
     };
 
     return (
-        <div className="flex items-center gap-x-2 font-semibold text-gray-500 ">
-            <input type="text" placeholder='Search' className='h-full border-gray-500 border-2 rounded-lg p-1 text-black'
+        <div className="flex items-center gap-x-2 font-semibold text-white">
+            <input type="text" placeholder='Search' className='h-full border-white border-b-[1px] px-1 text-white bg-transparent outline-none placeholder:text-white placeholder:font-normal'
                 onChange={(e) => { setSearchQuery(e.target.value) }}
             />
             <button type="submit" onClick={handleSubmit}>
-                <BsSearch size={15} color={'#fff'} className='text-gray-500' />
+                <BsSearch size={15} color={'#fff'} />
             </button>
         </div>
     );

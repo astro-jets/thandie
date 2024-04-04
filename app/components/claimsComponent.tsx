@@ -6,6 +6,7 @@ import SucessModal from "@/app/components/SuccessModal";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 type claimProps = {
     _id: string;
@@ -81,14 +82,9 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
                                         <p className="mt-5 font-bold text-xs text-primary-700">
                                             Claim status: Pending
                                         </p>
-                                        <button className="bg-primary-700 text-white rounded-lg mt-5 p-2 w-full flex items-center space-x-2">
-                                            <BsArrow90DegRight size={20} color={'white'} />
-                                            <p>View Claim Details</p>
-                                        </button>
-                                        <button className="bg-primary-700 text-white rounded-lg mt-5 p-2 w-full flex items-center space-x-2">
-                                            <BsTrash2 size={20} color={'white'} />
-                                            <p>Withdrawl Claim</p>
-                                        </button>
+                                        <Link href={`/claims/${claim._id}`} className="border-primary-700 border-[1px] rounded-lg mt-5 p-2 w-1/4 flex items-center space-x-2">
+                                            <BsArrow90DegRight size={20} color={'orange'} />
+                                        </Link>
                                     </div>
                                 </div>
                             )

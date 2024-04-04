@@ -93,3 +93,19 @@ export const updateClaim = async (
   console.log("Response => ", res);
   return res;
 };
+
+export const deleteClaim = async (
+  claim: string,
+  status: string
+): Promise<{ message: string }> => {
+  const response = await fetch(
+    `${process.env.ROOT_LINK}/api/claims/delete/?claim=${claim}&status=${status}`,
+    {
+      method: "DELETE",
+      next: { revalidate: 0 },
+    }
+  );
+  const res = await response.json();
+  console.log("Response => ", res);
+  return res;
+};

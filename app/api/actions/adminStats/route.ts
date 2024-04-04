@@ -7,25 +7,21 @@ import Service from "@/models/Service";
 
 export async function GET(req: Request) {
   try {
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("user");
-
     await dbConnect();
 
-    const claims = await Claim.countDocuments({ user: userId });
-    const subscriptions = await Subscription.countDocuments({ user: userId });
-    const payementsSet = await Subscription.find({ user: userId });
-    let payments = 0;
-    for (let i = 0; i < payementsSet.length; i++) {
-      const subscription = payementsSet[i];
+    const claimsCount = await Claim.countDocuments();
+    const subscriptionsCount = await Subscription.countDocuments();
+    const subscriptions = await Subscription.find();
+    let paymentsCount = 0;
+    for (let i = 0; i < subscriptions.length; i++) {
+      const subscription = subscriptions[i];
       const service = await Service.findById(subscription.service);
-      payments += parseInt(service.price as string);
+      paymentsCount += parseInt(service.price as string);
     }
-
     const stats = {
-      claims,
-      subscriptions,
-      payments,
+      claims: claimsCount,
+      subscriptions: subscriptionsCount,
+      payments: paymentsCount,
     };
 
     return NextResponse.json({ stats }, { status: 201 });
