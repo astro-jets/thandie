@@ -12,6 +12,7 @@ type claimProps = {
     _id: string;
     title: string;
     description: string;
+    status: string;
     service: {
         _id: string,
         name: string,
@@ -79,8 +80,8 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
                                         <p className="mt-1 text-gray-500">
                                             {claim.description}...
                                         </p>
-                                        <p className="mt-5 font-bold text-xs text-primary-700">
-                                            Claim status: Pending
+                                        <p className={`mt-5 font-bold text-xs text-primary-700`}>
+                                            Claim status: {claim.status}
                                         </p>
                                         <Link href={`/claims/${claim._id}`} className="border-primary-700 border-[1px] rounded-lg mt-5 p-2 w-1/4 flex items-center space-x-2">
                                             <BsArrow90DegRight size={20} color={'orange'} />
