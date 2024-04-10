@@ -24,7 +24,13 @@ const SingleClaim = ({ claim }: { claim: claimProps }) => {
     const router = useRouter();
 
     const handleSubmit = async (status: string) => {
-        const res = await updateClaim(claim._id, status)
+        const emailData = {
+            name: claim.user.name,
+            email: claim.user.email,
+            status: status,
+            url: `http://localhost:3000/claims/${claim._id}`
+        }
+        const res = await updateClaim(claim._id, status, emailData)
         if (res) {
             setModalMsg(res.message)
             setShowModal(true)

@@ -29,15 +29,16 @@ const links = [
         url: '/services'
     },
     {
-        name: 'Blogs',
-        url: '/stories'
-    },
-    {
         name: 'About Us',
         url: '/about'
-    }, {
+    },
+    {
         name: 'Contact Us',
         url: '/contacts'
+    },
+    {
+        name: 'Faqs',
+        url: '/faqs'
     },
 ]
 
@@ -145,7 +146,7 @@ const NavbarComponent = ({ notifications }: { notifications: notificationProps }
                                                                     }}
                                                                 >
                                                                     <div className="flex space-x-4 w-full">
-                                                                        <BsExclamationCircle style={{ hover: { color: '#fff' } }} color={"#fcb93e"} size={20} />
+                                                                        <BsExclamationCircle color={"#fcb93e"} size={20} />
                                                                         <p>{n.title}</p>
                                                                     </div>
                                                                     <p className="text-xs text-gray-300 w-full">{n.description}</p>
@@ -186,7 +187,7 @@ const NavbarComponent = ({ notifications }: { notifications: notificationProps }
 
                                                 <Link href="/dashboard/" className="px-4 py-2 text-sm text-gray-700 flex items-center justify-between space-x-3 hover:bg-primary-500 hover:text-white rounded-md w-11/12" role="menuitem" id="user-menu-item-0">
                                                     <div className="flex space-x-4 hover:text-white">
-                                                        <IoSpeedometerOutline style={{ hover: { color: '#fff' } }} color={"#fcb93e"} size={20} />
+                                                        <IoSpeedometerOutline color={"#fcb93e"} size={20} />
                                                         <p>Dashboard</p>
                                                     </div>
                                                     <span className="bg-primary-400 text-xs font-bold rounded-full w-5 h-5 p-3 text-white text-center flex items-center justify-center">12</span>

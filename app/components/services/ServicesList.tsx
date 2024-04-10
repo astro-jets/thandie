@@ -44,7 +44,7 @@ const ServicesList = ({ services }: { services: servicesProps }) => {
 
                 <div
                     className="w-full max-w-[1190px] px-6 sm:px-8 md:px-16 py-10 md:py-20 rounded-xl bg-[#ffffff]/60 min-h-[300px] m-2 shadow-[0px_14px_28px_-5px_rgba(0,0,0,0.21)]">
-                    <h1 className="font-semibold text-2xl mb-2 tracking-wider drop-shadow-[3px_3px_5px_rgba(91,91,91,0.58)]">Addordable Insurance cover</h1>
+                    <h1 className="font-semibold text-2xl mb-2 tracking-wider drop-shadow-[3px_3px_5px_rgba(91,91,91,0.58)]">Affordable Insurance cover</h1>
                     <small className="font-[500]">In the event that we do not have a full 30-days, we extrapolate based on data we have.</small>
 
                     <ul className="flex items-start justify-between gap-8 mt-10 md:flex-row flex-col">

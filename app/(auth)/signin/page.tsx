@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { signIn } from "next-auth/react";
 // Components
 import ErrorModal from "../../components/ErrorModal";
+import Link from "next/link";
 
 const Signup = () => {
     const [modalStatus, setModalStatus] = useState(false);
@@ -44,6 +45,7 @@ const Signup = () => {
                 onClose={() => setModalStatus(false)}
             />
             <div className="w-full overflow-hidden  bg-primary-400 flex items-center justify-center min-h-screen relative z-10">
+                <Link href={'/'} className='rounded-lg shadow-lg bg-primary-700 text-white py-2 px-3 absolute top-3 left-3 transition hover:scale-110'>Home</Link>
                 <div className="absolute -top-40 -right-40 lg:w-2/3 w-full h-80 -z-10">
                     <svg xmlns='http://www.w3.org/2000/svg' className="drop-shadow-[-20px_10px_0px_#ffc949]" viewBox='0 0 2000 2000'
                         fill='#ffb14a'>
