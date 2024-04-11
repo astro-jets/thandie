@@ -2,7 +2,6 @@
 import dbConnect from "@/lib/db";
 import Service from "@/models/Service";
 import Claim from "@/models/Claim";
-import User from "@/models/User";
 import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
@@ -13,6 +12,7 @@ type claimProps = {
   status: string;
   description: string;
   subscription: string;
+  path: string;
 }[];
 
 export async function GET(req: Request) {
@@ -52,6 +52,7 @@ export async function GET(req: Request) {
         description: await trimPassage(claim.description),
         status: claim.status,
         service: service,
+        path: claim.path,
       });
     }
     return NextResponse.json({ claimsData }, { status: 201 });

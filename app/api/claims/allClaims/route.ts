@@ -13,6 +13,7 @@ type claimProps = {
   status: string;
   description: string;
   subscription: string;
+  path: string;
 }[];
 
 export async function GET(req: Request) {
@@ -50,6 +51,7 @@ export async function GET(req: Request) {
         status: claim.status,
         description: await trimPassage(claim.description),
         service: service,
+        path: claim.path,
       });
     }
     return NextResponse.json({ claimsData }, { status: 201 });

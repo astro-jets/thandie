@@ -15,25 +15,13 @@ type emailDataProps = {
   url: string;
 };
 
-export const newclaim = async (formData: {}): Promise<
-  | {
-      message: string;
-      status: string;
-    }
-  | any
-> => {
-  try {
-    const response = await fetch(`${process.env.ROOT_LINK}/api/claims/new`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      cache: "no-store",
-      body: JSON.stringify(formData),
-    });
-    const res = await response.json();
-    return res;
-  } catch (e) {
-    console.error(e);
-  }
+export const newclaim = async (formData: {}): Promise<any> => {
+  const response = await fetch(`${process.env.ROOT_LINK}/api/claims/new`, {
+    method: "POST",
+    body: JSON.stringify(formData),
+  });
+  const res = await response.json();
+  return res;
 };
 
 export const getclaims = async (): Promise<{ claims: claimProps } | any> => {

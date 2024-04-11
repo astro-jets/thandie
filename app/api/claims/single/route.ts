@@ -13,6 +13,7 @@ type claimProps = {
   title: string;
   description: string;
   subscription: string;
+  path: string;
 }[];
 
 export async function GET(req: Request) {
@@ -43,6 +44,7 @@ export async function GET(req: Request) {
       claimsData.push({
         _id: claim._id,
         status: claim.status,
+        path: claim.path,
         user: {
           id: user._id as string,
           name: user.name as string,

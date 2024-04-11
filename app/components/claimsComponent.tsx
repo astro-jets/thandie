@@ -28,33 +28,57 @@ type subscriptionProps = {
         list: string[];
     }[];
 };
-type formDataTypes = { user: string, subscription: string, title: string, description: string }
-const initialData: formDataTypes = { user: '', subscription: '', title: '', description: '' }
+type formDataTypes = { user: string, subscription: string, title: string, description: string, file: File | null }
+const initialData: formDataTypes = { user: '', subscription: '', title: '', description: '', file: null }
 
 const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscriptions: subscriptionProps }) => {
     const [modalMessage, setModalMessage] = useState('');
     const [success, setSuccess] = useState(false);
     const [showFrom, setShowForm] = useState(false);
     const [formData, setFormData] = useState<formDataTypes>(initialData)
+    const [file, setFile] = useState<File>();
     const router = useRouter();
     const { data: session, status } = useSession();
+
+    // const handleSubmit = async () => {
+    //     if (!file) { return }
+    //     formData.file = file;
+    //     formData.user = session?.user.id!;
+    //     const res = await newclaim(formData);
+    //     if (res) {
+    //         setModalMessage(res.message)
+    //         setSuccess(true)
+    //     }
+    //     setShowForm(!showFrom);
+    // }
+
+    const handleSubmit = async () => {
+        if (!file) { return }
+        const data = new FormData();
+        data.append('file', file);
+        data.append('user', session?.user.id!);
+        data.append('subscription', formData.subscription);
+        data.append('title', formData.title);
+        data.append('description', formData.description);
+        const res = await fetch(`http://localhost:3000/api/claims/new`, {
+            method: "POST",
+            body: data
+        });
+        const result = await res.json();
+        if (result) {
+            setModalMessage(result.message)
+            setSuccess(true)
+        }
+        setShowForm(!showFrom);
+    }
+
+
 
     const handleClick = (e: any) => {
         setFormData({
             ...formData,
             subscription: e.target.value
         })
-    }
-
-    const handleSubmit = async () => {
-        formData.user = session?.user.id!;
-        console.log(formData);
-        const res = await newclaim(formData);
-        if (res) {
-            setModalMessage(res.message)
-            setSuccess(true)
-        }
-        setShowForm(!showFrom);
     }
     console.log("Claims => ", claims)
     return (
@@ -109,11 +133,11 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
             }
 
             {showFrom &&
-                <div className="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div className="relative z-50 w-full" aria-labelledby="modal-title" role="dialog" aria-modal="true">
                     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                            <div className="w-full relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg space-y-4 py-4">
+                    <div className="fixed inset-0 z-10 w-screen  overflow-y-auto">
+                        <div className="w-screen flex  min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                            <div className="w-3/5 h-[80vh] bg-white transform overflow-hidden rounded-lg  text-left shadow-xl transition-all space-y-4 py-4">
                                 <p className="text-primary-500 text-lg font-bold text-center">Add a new claim</p>
                                 <div className="close-btn absolute top-0 right-2 cursor-pointer" onClick={() => { setShowForm(!showFrom) }}>
                                     <BsXCircle size={25} color={'orange'} />
@@ -147,15 +171,32 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
                                         <label htmlFor="hs-textarea-with-corner-hint" className="block text-sm font-medium">Message</label>
                                         <span className="block text-sm text-gray-500">100 characters</span>
                                     </div>
-                                    <textarea id="hs-textarea-with-corner-hint" className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="An explanation of the claim you are issuing."
-                                        value={formData.description}
-                                        onChange={(e) => {
-                                            setFormData({
-                                                ...formData,
-                                                description: e.target.value
-                                            })
-                                        }}
-                                    ></textarea>
+
+                                    <div className="w-full flex justify-between">
+                                        <textarea id="hs-textarea-with-corner-hint" className="py-3 px-4 block w-[66%] shadow-lg border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="An explanation of the claim you are issuing."
+                                            value={formData.description}
+                                            onChange={(e) => {
+                                                setFormData({
+                                                    ...formData,
+                                                    description: e.target.value
+                                                })
+                                            }}
+                                        ></textarea>
+
+                                        <div className="flex items-center justify-center w-[30%]">
+                                            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-60 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100">
+                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                    <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                    </svg>
+                                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400"> PNG or JPG (MAX. 800x400px)</p>
+                                                </div>
+                                                <input id="dropzone-file" type="file" className="hidden" onChange={(e) => { setFile(e.target.files?.[0]) }} />
+                                            </label>
+                                        </div>
+                                    </div>
+
                                     <button type="button" className="bg-primary-500 rounded-lg p-3 w-3/4 text-white" onClick={(e) => { handleSubmit() }}>Submit</button>
                                 </form>
 

@@ -17,6 +17,7 @@ const ClaimSchema = new Schema(
     title: { type: String },
     description: { type: String },
     status: { type: String, default: "pending" },
+    path: { type: String },
   },
   { timestamps: true }
 );

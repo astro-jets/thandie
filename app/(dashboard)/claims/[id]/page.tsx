@@ -8,6 +8,7 @@ type claimProps = {
     title: string;
     status: string;
     description: string;
+    path: string;
     service: {
         name: string; description: string;
     },

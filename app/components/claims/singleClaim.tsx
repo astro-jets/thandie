@@ -10,6 +10,7 @@ type claimProps = {
     title: string;
     description: string;
     status: string;
+    path: string;
     service: {
         name: string; description: string;
     },
@@ -44,48 +45,55 @@ const SingleClaim = ({ claim }: { claim: claimProps }) => {
 
     return (
         <div className="shadow-ld shadow-gray-300 rounded-lg shadow-md overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-xl font-medium text-gray-800">Claim Details</h2>
-            </div>
-            <div className="px-6 py-4 space-y-4">
-                <div className="flex w-1/3">
-                    <p className="text-gray-800 font-bold w-full">
-                        <span className="text-gray-800 ">Title:</span> {claim.title}
-                    </p>
+            <div className="flex w-full justify-between">
+                <div className="w-[50%]">
+                    <div className="px-6 py-4 border-b border-gray-200">
+                        <h2 className="text-xl font-medium text-gray-800">Claim Details</h2>
+                    </div>
+                    <div className="px-6 py-4 space-y-4">
+                        <div className="flex w-1/3">
+                            <p className="text-gray-800 font-bold w-full">
+                                <span className="text-gray-800 ">Title:</span> {claim.title}
+                            </p>
+                        </div>
+                        <div className="flex  w-1/3">
+                            <p className=" text-gray-800 w-full">
+                                <span className="font-bold">From:</span> {claim.user.email}
+                            </p>
+                        </div>
+                        <div className="flex  w-1/3">
+                            <p className="text-gray-800 break-words w-full">
+                                <span className="font-bold">User:</span> {claim.user.name}
+                            </p>
+                        </div>
+                        <div className="flex w-1/3 ">
+                            <p className="text-gray-800 w-full">
+                                <span className="font-bold">Service:</span> {claim.service.name}
+                            </p>
+                        </div>
+                        <div className="flex flex-col space-y-3">
+                            <p className="text-gray-800 font-bold">Claim Description:</p>
+                            <p className="text-gray-800 break-words w-3/4">
+                                {claim.description}
+                            </p>
+                        </div>
+                    </div>
+                    <div className="px-6 py-4 flex justify-start space-x-2">
+                        <button className="px-4 py-2 rounded-md bg-primary-500 text-white font-medium hover:bg-primary-700 focus:outline-none"
+                            onClick={() => { handleSubmit('aproved') }}
+                        >
+                            Approve
+                        </button>
+                        <button className="px-4 py-2 rounded-md bg-red-600 text-white font-medium hover:bg-red-700 focus:outline-none"
+                            onClick={() => { handleSubmit('rejected') }}
+                        >
+                            Reject
+                        </button>
+                    </div>
                 </div>
-                <div className="flex  w-1/3">
-                    <p className=" text-gray-800 w-full">
-                        <span className="font-bold">From:</span> {claim.user.email}
-                    </p>
+                <div className="w-[50%] h-full overflow-hidden">
+                    <img className="w-full h-full object-cover" src={`/uploads/${claim.path}`} alt="" />
                 </div>
-                <div className="flex  w-1/3">
-                    <p className="text-gray-800 break-words w-full">
-                        <span className="font-bold">User:</span> {claim.user.name}
-                    </p>
-                </div>
-                <div className="flex w-1/3 ">
-                    <p className="text-gray-800 w-full">
-                        <span className="font-bold">Service:</span> {claim.service.name}
-                    </p>
-                </div>
-                <div className="flex flex-col space-y-3">
-                    <p className="text-gray-800 font-bold">Claim Description:</p>
-                    <p className="text-gray-800 break-words w-3/4">
-                        {claim.description}
-                    </p>
-                </div>
-            </div>
-            <div className="px-6 py-4 flex justify-start space-x-2">
-                <button className="px-4 py-2 rounded-md bg-primary-500 text-white font-medium hover:bg-primary-700 focus:outline-none"
-                    onClick={() => { handleSubmit('aproved') }}
-                >
-                    Approve
-                </button>
-                <button className="px-4 py-2 rounded-md bg-red-600 text-white font-medium hover:bg-red-700 focus:outline-none"
-                    onClick={() => { handleSubmit('rejected') }}
-                >
-                    Reject
-                </button>
             </div>
             <SucessModal
                 message={modalMsg}

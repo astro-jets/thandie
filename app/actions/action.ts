@@ -177,7 +177,10 @@ export const readNotifications = async (
 export const searchService = async (query: string): Promise<any> => {
   try {
     const response = await fetch(
-      `${process.env.ROOT_LINK}/api/services/search/?query=${query}`
+      `${process.env.ROOT_LINK}/api/services/search/?query=${query}`,
+      {
+        next: { revalidate: 0 },
+      }
     );
     if (!response) {
       return "Couldnt find stats";
