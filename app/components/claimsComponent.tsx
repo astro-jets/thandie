@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import RadioComponent from "./radio";
 
 type claimProps = {
     _id: string;
@@ -37,22 +38,12 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
     const [showFrom, setShowForm] = useState(false);
     const [formData, setFormData] = useState<formDataTypes>(initialData)
     const [file, setFile] = useState<File>();
+    const [isChecked, setIsChecked] = useState('');
     const router = useRouter();
     const { data: session, status } = useSession();
 
-    // const handleSubmit = async () => {
-    //     if (!file) { return }
-    //     formData.file = file;
-    //     formData.user = session?.user.id!;
-    //     const res = await newclaim(formData);
-    //     if (res) {
-    //         setModalMessage(res.message)
-    //         setSuccess(true)
-    //     }
-    //     setShowForm(!showFrom);
-    // }
-
     const handleSubmit = async () => {
+        console.log(formData)
         if (!file) { return }
         const data = new FormData();
         data.append('file', file);
@@ -137,12 +128,34 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
                     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
                     <div className="fixed inset-0 z-10 w-screen  overflow-y-auto">
                         <div className="w-screen flex  min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                            <div className="w-3/5 h-[80vh] bg-white transform overflow-hidden rounded-lg  text-left shadow-xl transition-all space-y-4 py-4">
+                            <div className="w-[80%] min-h-[80vh] bg-white transform overflow-hidden rounded-lg  text-left shadow-xl transition-all space-y-4 py-4">
                                 <p className="text-primary-500 text-lg font-bold text-center">Add a new claim</p>
                                 <div className="close-btn absolute top-0 right-2 cursor-pointer" onClick={() => { setShowForm(!showFrom) }}>
                                     <BsXCircle size={25} color={'orange'} />
                                 </div>
-                                <form className="w-full h-80 px-4 space-y-3 flex flex-col items-center">
+                                <form className="w-full \ px-4 space-y-3 flex flex-col items-center">
+                                    <div className="flex justify-between w-full">
+                                        <input
+                                            type="text" name="title" placeholder="First Name"
+                                            className="py-3 px-4 block w-[48%] border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        />
+                                        <input
+                                            type="text" name="title" placeholder="Last name"
+                                            className="py-3 px-4 block w-[48%] border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        />
+                                    </div>
+
+                                    <div className="flex justify-between w-full">
+                                        <input
+                                            type="text" name="title" placeholder="Phone"
+                                            className="py-3 px-4 block w-[48%] border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        />
+                                        <input
+                                            type="text" name="title" placeholder="Address"
+                                            className="py-3 px-4 block w-[48%] border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                        />
+                                    </div>
+
                                     <input
                                         type="text" name="title" placeholder="Claim Title"
                                         className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
@@ -154,7 +167,7 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
                                             })
                                         }}
                                     />
-                                    <select className="py-3 px-4 pe-9 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    {/* <select className="py-3 px-4 pe-9 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
                                         onChange={(e) => { handleClick(e) }}
                                     >
                                         <option selected>Select claimable subscription</option>
@@ -165,7 +178,41 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
                                                 </option>
                                             ))
                                         }
-                                    </select>
+                                    </select> */}
+
+                                    <div className="w-full flex flex-col items-center justify-start">
+                                        <h1 className="font-bold text-lg">Select your subscription</h1>
+                                        <div className="w-full flex space-x-7 items-center justify-start">
+                                            {
+                                                subscriptions.services.map((service, index) => (
+                                                    <div>
+                                                        <label htmlFor={service._id} className="flex cursor-pointer select-none items-center">
+                                                            <div className="relative">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    id={service._id}
+                                                                    className="sr-only"
+                                                                    value={service._id}
+                                                                    onChange={(e) => {
+                                                                        setIsChecked(service._id);
+                                                                        handleClick(e);
+                                                                    }}
+                                                                />
+                                                                <div
+                                                                    className={`box mr-4 flex h-5 w-5 items-center justify-center rounded-full border border-primary-700 ${isChecked === service._id && "!border-4"}`}
+                                                                >
+                                                                    <span className="h-2.5 w-2.5 rounded-full bg-white dark:bg-transparent"></span>
+                                                                </div>
+                                                            </div>
+                                                            {service.name}
+                                                        </label>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+
+
 
                                     <div className="w-full flex justify-between items-center mt-4">
                                         <label htmlFor="hs-textarea-with-corner-hint" className="block text-sm font-medium">Message</label>

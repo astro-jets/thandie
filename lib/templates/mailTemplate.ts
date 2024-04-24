@@ -159,14 +159,18 @@ export const mailTemplate = `<!DOCTYPE html>
 													<table class="heading_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
 														<tr>
 															<td class="pad" style="padding-bottom:5px;padding-top:25px;text-align:center;width:100%;">
-																<h1 style="margin: 0; color: #555555; direction: ltr; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; font-size: 36px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 43.199999999999996px;"><strong>Claim {{status}}</strong></h1>
+																<h1 style="margin: 0; color: #555555; direction: ltr; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; font-size: 36px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 43.199999999999996px;">
+																	<strong>Claim {{status}}</strong>
+																</h1>
 															</td>
 														</tr>
 													</table>
 													<table class="heading_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
 														<tr>
 															<td class="pad" style="padding-bottom:5px;padding-top:25px;text-align:center;width:100%;">
-																<h3 style="margin: 0; color: #ff9100; direction: ltr; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 28.799999999999997px;"><strong>Hi, {{name}}</strong></h3>
+																<h3 style="margin: 0; color: #ff9100; direction: ltr; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 28.799999999999997px;">
+																	<strong>Hi, {{name}}</strong>
+																</h3>
 															</td>
 														</tr>
 													</table>
@@ -175,7 +179,11 @@ export const mailTemplate = `<!DOCTYPE html>
 															<td class="pad" style="padding-bottom:20px;padding-left:15px;padding-right:15px;padding-top:20px;">
 																<div style="color:#45464c;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:18px;line-height:180%;text-align:center;mso-line-height-alt:32.4px;">
 																	<p style="margin: 0; word-break: break-word;"><span style="font-family:Arial, Helvetica Neue, Helvetica, sans-serif background-color: transparent;">This email is to notify you that </span></p>
-																	<p style="margin: 0; word-break: break-word;"><span style="font-family:Arial, Helvetica Neue, Helvetica, sans-serif background-color: transparent;">your claim has been {{status}}.</span></p>
+																	<p style="margin: 0; word-break: break-word;">
+																		<span style="font-family:Arial, Helvetica Neue, Helvetica, sans-serif background-color: transparent;">
+																			your claim has been {{status}}.
+																		</span>
+																	</p>
 																</div>
 															</td>
 														</tr>
