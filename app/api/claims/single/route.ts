@@ -13,6 +13,11 @@ type claimProps = {
   title: string;
   description: string;
   subscription: string;
+  date: string;
+  location: string;
+  witnessName: string;
+  witnessEmail: string;
+  witnessPhone: string;
   path: string;
 }[];
 
@@ -44,6 +49,11 @@ export async function GET(req: Request) {
       claimsData.push({
         _id: claim._id,
         status: claim.status,
+        date: claim.date,
+        location: claim.location,
+        witnessName: claim.witnessName,
+        witnessEmail: claim.witnessEmail,
+        witnessPhone: claim.witnessPhone,
         path: claim.path,
         user: {
           id: user._id as string,

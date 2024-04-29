@@ -9,6 +9,11 @@ type claimProps = {
         title: string;
         status: string;
         description: string;
+        date: string,
+        location: string,
+        witnessName: string,
+        witnessEmail: string,
+        witnessPhone: string,
         service: {
             name: string; description: string;
         },
@@ -20,8 +25,7 @@ type claimProps = {
 const ClaimsAdmin = async () => {
     const data: claimProps = await getclaims();
     const claims = data.claimsData.filter(d => d.status == 'pending')
-    console.log("Data => ", data)
-    console.log("Claims => ", claims)
+
     return (
         <>
             <h1>Claims Admin</h1>

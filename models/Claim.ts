@@ -18,6 +18,11 @@ const ClaimSchema = new Schema(
     description: { type: String },
     status: { type: String, default: "pending" },
     path: { type: String },
+    date: { type: Date },
+    location: { type: String },
+    witnessName: { type: String },
+    witnessEmail: { type: String },
+    witnessPhone: { type: String },
   },
   { timestamps: true }
 );

@@ -1,4 +1,5 @@
 import { getSingleClaim } from "@/app/actions/claims";
+import ClaimSummary from "@/app/components/claims/claimSummaryAdmin";
 import SingleClaim from "@/app/components/claims/singleClaim";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 
@@ -7,9 +8,14 @@ type claimProps = {
     title: string;
     status: string;
     description: string;
+    date: string,
+    location: string,
+    witnessName: string,
+    witnessEmail: string,
+    witnessPhone: string,
     path: string;
     service: {
-        name: string; description: string;
+        _id: string; price: string; name: string; description: string;
     },
     user: {
         name: string; email: string;
@@ -25,7 +31,7 @@ const FetchSingleClaim = async ({ params }: paramProps) => {
     const res = await getSingleClaim(id);
     const claim: claimProps = await res.claimsData[0];
     return (
-        <SingleClaim claim={claim} />
+        <ClaimSummary claimData={claim} />
     );
 }
 

@@ -40,6 +40,10 @@ const links = [
         name: 'Faqs',
         url: '/faqs'
     },
+    {
+        name: 'Help',
+        url: '/help'
+    },
 ]
 
 const initialModal = {

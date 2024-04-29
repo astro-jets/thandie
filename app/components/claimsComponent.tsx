@@ -29,8 +29,29 @@ type subscriptionProps = {
         list: string[];
     }[];
 };
-type formDataTypes = { user: string, subscription: string, title: string, description: string, file: File | null }
-const initialData: formDataTypes = { user: '', subscription: '', title: '', description: '', file: null }
+type formDataTypes = {
+    user: string,
+    subscription: string,
+    title: string,
+    description: string,
+    date: string,
+    location: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string,
+    file: File | null
+}
+const initialData: formDataTypes = {
+    user: '', subscription: '', title: '', description: '',
+    date: '',
+    location: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    file: null
+}
 
 const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscriptions: subscriptionProps }) => {
     const [modalMessage, setModalMessage] = useState('');
@@ -42,15 +63,26 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
     const router = useRouter();
     const { data: session, status } = useSession();
 
+    if (!session?.user) { return }
+
     const handleSubmit = async () => {
         console.log(formData)
         if (!file) { return }
         const data = new FormData();
         data.append('file', file);
-        data.append('user', session?.user.id!);
+        data.append('user', session.user.id);
         data.append('subscription', formData.subscription);
         data.append('title', formData.title);
         data.append('description', formData.description);
+        data.append('date', formData.date);
+        data.append('location', formData.location);
+        data.append('lastName', formData.lastName);
+        data.append('firstName', formData.firstName);
+        data.append('email', formData.email);
+        data.append('phone', formData.phone);
+
+        console.log(data)
+
         const res = await fetch(`http://localhost:3000/api/claims/new`, {
             method: "POST",
             body: data
@@ -124,49 +156,214 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
             }
 
             {showFrom &&
-                <div className="relative z-50 w-full" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div className="relative z-50 w-full" >
                     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                    <div className="fixed inset-0 z-10 w-screen  overflow-y-auto">
+                    <div className="relative -left-40 -top-80 inset-0 z-10 w-screen  overflow-y-auto">
                         <div className="w-screen flex  min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                            <div className="w-[80%] min-h-[80vh] bg-white transform overflow-hidden rounded-lg  text-left shadow-xl transition-all space-y-4 py-4">
+                            <div className="w-[80%] min-h-[80vh] bg-white transform overflow-y-auto rounded-lg  text-left shadow-xl transition-all space-y-4 py-4">
                                 <p className="text-primary-500 text-lg font-bold text-center">Add a new claim</p>
                                 <div className="close-btn absolute top-0 right-2 cursor-pointer" onClick={() => { setShowForm(!showFrom) }}>
                                     <BsXCircle size={25} color={'orange'} />
                                 </div>
-                                <form className="w-full \ px-4 space-y-3 flex flex-col items-center">
-                                    <div className="flex justify-between w-full">
-                                        <input
-                                            type="text" name="title" placeholder="First Name"
-                                            className="py-3 px-4 block w-[48%] border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                                        />
-                                        <input
-                                            type="text" name="title" placeholder="Last name"
-                                            className="py-3 px-4 block w-[48%] border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                                        />
+                                <form className="w-full \ px-4 space-y-9 flex flex-col items-center">
+                                    {/* Claim Details */}
+                                    <div className="w-full flex-col flex space-y-4">
+                                        <p className="text-primary-500 font-bold">Claim details</p>
+                                        <div className="flex justify-between w-full">
+                                            <div className="flex-col flex w-[48%]">
+                                                <label htmlFor="">Claim Title</label>
+                                                <input
+                                                    type="text" name="title" placeholder="The title of your claim"
+                                                    className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                                    value={formData.title}
+                                                    onChange={(e) => {
+                                                        setFormData({
+                                                            ...formData,
+                                                            title: e.target.value
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="flex-col flex w-[48%]">
+                                                <label htmlFor="">Policy Number</label>
+                                                <input
+                                                    type="text" name="title" placeholder="Witness' last name"
+                                                    className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="flex justify-between w-full">
+                                            <div className="flex-col flex w-[48%]">
+                                                <label htmlFor="">Incident Date</label>
+                                                <input
+                                                    type="date" name="incidentDate"
+                                                    className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                                    value={formData.date}
+                                                    onChange={(e) => {
+                                                        setFormData({
+                                                            ...formData,
+                                                            date: e.target.value
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+
+                                            <div className="flex-col flex w-[48%]">
+                                                <label htmlFor="">Incident Location</label>
+                                                <input
+                                                    type="text" name="location" placeholder="Location of incident"
+                                                    className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                                    value={formData.location}
+                                                    onChange={(e) => {
+                                                        setFormData({
+                                                            ...formData,
+                                                            location: e.target.value
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div className="flex justify-between w-full">
-                                        <input
-                                            type="text" name="title" placeholder="Phone"
-                                            className="py-3 px-4 block w-[48%] border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                                        />
-                                        <input
-                                            type="text" name="title" placeholder="Address"
-                                            className="py-3 px-4 block w-[48%] border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                                        />
-                                    </div>
 
-                                    <input
-                                        type="text" name="title" placeholder="Claim Title"
-                                        className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
-                                        value={formData.title}
-                                        onChange={(e) => {
-                                            setFormData({
-                                                ...formData,
-                                                title: e.target.value
-                                            })
-                                        }}
-                                    />
+                                    <div className="w-full space-y-5">
+                                        <div className="w-full flex flex-col items-center justify-start space-y-4 ">
+                                            <h1 className="text-primary-500 font-bold text-start self-start">Select your subscription</h1>
+                                            <div className="w-full flex space-x-7 items-center justify-start">
+                                                {
+                                                    subscriptions.services.map((service, index) => (
+                                                        <div>
+                                                            <label htmlFor={service._id} className="flex cursor-pointer select-none items-center">
+                                                                <div className="relative">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={service._id}
+                                                                        className="sr-only"
+                                                                        value={service._id}
+                                                                        onChange={(e) => {
+                                                                            setIsChecked(service._id);
+                                                                            handleClick(e);
+                                                                        }}
+                                                                    />
+                                                                    <div
+                                                                        className={`box mr-4 flex h-5 w-5 items-center justify-center rounded-full border border-primary-700 ${isChecked === service._id && "!border-4"}`}
+                                                                    >
+                                                                        <span className="h-2.5 w-2.5 rounded-full bg-white dark:bg-transparent"></span>
+                                                                    </div>
+                                                                </div>
+                                                                {service.name}
+                                                            </label>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <div className="flex justify-between w-full">
+                                            <div className="w-full flex justify-between items-center self-start mt-4 max-w-[66%]">
+                                                <label htmlFor="hs-textarea-with-corner-hint" className="text-start self-start block">Detailed Description</label>
+                                                <span className="block text-sm text-gray-500">max 4000 characters</span>
+                                            </div>
+                                            <div className="w-full flex justify-between items-center self-end mt-4 max-w-[30%]">
+                                                <label htmlFor="hs-textarea-with-corner-hint" className="text-start self-start block">Evidence Image</label>
+                                            </div>
+                                        </div>
+
+                                        <div className="w-full flex justify-between">
+                                            <textarea id="hs-textarea-with-corner-hint" className="py-3 px-4 block w-[66%] shadow-lg border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="An explanation of the claim you are issuing."
+                                                value={formData.description}
+                                                onChange={(e) => {
+                                                    setFormData({
+                                                        ...formData,
+                                                        description: e.target.value
+                                                    })
+                                                }}
+                                            ></textarea>
+
+                                            <div className="flex items-center justify-center w-[30%]">
+                                                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-60 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100">
+                                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                        <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                        </svg>
+                                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload Evidence</span> or drag and drop</p>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400"> PNG or JPG (MAX. 800x400px)</p>
+                                                    </div>
+                                                    <input id="dropzone-file" type="file" className="hidden" onChange={(e) => { setFile(e.target.files?.[0]) }} />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* Claim Details End*/}
+
+                                    {/* Witness details */}
+                                    <div className="w-full flex-col flex space-y-4">
+                                        <p className="text-primary-500 font-bold">Witness details</p>
+                                        <div className="flex justify-between w-full">
+                                            <div className="flex-col flex w-[48%]">
+                                                <label htmlFor="">Witness first name</label>
+                                                <input
+                                                    type="text" name="firstName" placeholder="witness' first Name"
+                                                    className="py-3 px-4 block w-full  border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                                    value={formData.firstName}
+                                                    onChange={(e) => {
+                                                        setFormData({
+                                                            ...formData,
+                                                            firstName: e.target.value
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="flex-col flex w-[48%]">
+                                                <label htmlFor="">Witness last name</label>
+                                                <input
+                                                    type="text" name="lastName" placeholder="Witness' last name"
+                                                    className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                                    value={formData.lastName}
+                                                    onChange={(e) => {
+                                                        setFormData({
+                                                            ...formData,
+                                                            lastName: e.target.value
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="flex justify-between w-full">
+                                            <div className="flex-col flex w-[48%]">
+                                                <label htmlFor="">Witness Phone number</label>
+                                                <input
+                                                    type="text" name="phone" placeholder="Witness' phone number"
+                                                    className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                                    value={formData.phone}
+                                                    onChange={(e) => {
+                                                        setFormData({
+                                                            ...formData,
+                                                            phone: e.target.value
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+
+                                            <div className="flex-col flex w-[48%]">
+                                                <label htmlFor="">Witness email address</label>
+                                                <input
+                                                    type="email" name="email" placeholder="Address"
+                                                    className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
+                                                    value={formData.email}
+                                                    onChange={(e) => {
+                                                        setFormData({
+                                                            ...formData,
+                                                            email: e.target.value
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* Witness details end*/}
                                     {/* <select className="py-3 px-4 pe-9 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none"
                                         onChange={(e) => { handleClick(e) }}
                                     >
@@ -179,70 +376,6 @@ const ClaimsComponent = ({ claims, subscriptions }: { claims: claimProps, subscr
                                             ))
                                         }
                                     </select> */}
-
-                                    <div className="w-full flex flex-col items-center justify-start">
-                                        <h1 className="font-bold text-lg">Select your subscription</h1>
-                                        <div className="w-full flex space-x-7 items-center justify-start">
-                                            {
-                                                subscriptions.services.map((service, index) => (
-                                                    <div>
-                                                        <label htmlFor={service._id} className="flex cursor-pointer select-none items-center">
-                                                            <div className="relative">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    id={service._id}
-                                                                    className="sr-only"
-                                                                    value={service._id}
-                                                                    onChange={(e) => {
-                                                                        setIsChecked(service._id);
-                                                                        handleClick(e);
-                                                                    }}
-                                                                />
-                                                                <div
-                                                                    className={`box mr-4 flex h-5 w-5 items-center justify-center rounded-full border border-primary-700 ${isChecked === service._id && "!border-4"}`}
-                                                                >
-                                                                    <span className="h-2.5 w-2.5 rounded-full bg-white dark:bg-transparent"></span>
-                                                                </div>
-                                                            </div>
-                                                            {service.name}
-                                                        </label>
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                    </div>
-
-
-
-                                    <div className="w-full flex justify-between items-center mt-4">
-                                        <label htmlFor="hs-textarea-with-corner-hint" className="block text-sm font-medium">Message</label>
-                                        <span className="block text-sm text-gray-500">100 characters</span>
-                                    </div>
-
-                                    <div className="w-full flex justify-between">
-                                        <textarea id="hs-textarea-with-corner-hint" className="py-3 px-4 block w-[66%] shadow-lg border-gray-200 border-[1px] rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="An explanation of the claim you are issuing."
-                                            value={formData.description}
-                                            onChange={(e) => {
-                                                setFormData({
-                                                    ...formData,
-                                                    description: e.target.value
-                                                })
-                                            }}
-                                        ></textarea>
-
-                                        <div className="flex items-center justify-center w-[30%]">
-                                            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-60 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100">
-                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                    </svg>
-                                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400"> PNG or JPG (MAX. 800x400px)</p>
-                                                </div>
-                                                <input id="dropzone-file" type="file" className="hidden" onChange={(e) => { setFile(e.target.files?.[0]) }} />
-                                            </label>
-                                        </div>
-                                    </div>
 
                                     <button type="button" className="bg-primary-500 rounded-lg p-3 w-3/4 text-white" onClick={(e) => { handleSubmit() }}>Submit</button>
                                 </form>
